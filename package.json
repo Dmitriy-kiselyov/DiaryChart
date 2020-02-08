@@ -1,0 +1,32 @@
+{
+    "name": "diary-chart",
+    "version": "1.0.0",
+    "description": "Chart for my diary",
+    "main": "index.js",
+    "scripts": {
+        "start": "webpack-dev-server --open --mode development",
+        "build": "webpack --mode production"
+    },
+    "keywords": [],
+    "author": "https://github.com/Dmitriy-kiselyov",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/react": "^16.9.13",
+        "babel-loader": "^8.0.6",
+        "css-loader": "^3.2.0",
+        "html-loader": "^0.5.5",
+        "html-webpack-plugin": "^3.2.0",
+        "node-sass": "^4.13.0",
+        "sass-loader": "^8.0.0",
+        "style-loader": "^1.0.1",
+        "ts-loader": "^6.2.1",
+        "typescript": "^3.7.2",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.9.0"
+    },
+    "dependencies": {
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0"
+    }
+}
