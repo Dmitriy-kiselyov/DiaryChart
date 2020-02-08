@@ -1,7 +1,15 @@
 import React from 'react';
 
 import { Title } from '../Title/Title';
+import { Chart } from '../Chart/Chart';
+
+import './Root.scss';
 
 export function Root() {
-    return <Title text="Заголовок"/>;
+    return (
+        <div className="Root">
+            <Title text="Diary Chart"/>
+            <Chart />
+        </div>
+    );
 }

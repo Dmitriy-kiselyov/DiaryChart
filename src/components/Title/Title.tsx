@@ -7,5 +7,5 @@ interface ITitleProps {
 }
 
 export function Title(props: ITitleProps) {
-    return <span className="Title">{props.text}</span>
+    return <div className="Title">{props.text}</div>
 }

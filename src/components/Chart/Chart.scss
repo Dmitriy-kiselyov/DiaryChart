@@ -1,0 +1,78 @@
+$cellWidth: 30px;
+$headerHeight: 40px;
+$headerMargin: 5px;
+
+.Chart {
+    white-space: nowrap;
+    display: flex;
+
+    &-Header {
+        height: $headerHeight;
+        display: flex;
+        align-items: center;
+        margin-bottom: $headerMargin;
+    }
+
+    &-Scale {
+        flex-shrink: 0;
+        width: 40px;
+        position: relative;
+        margin-top: $headerHeight + $headerMargin;
+        margin-bottom: 26px;
+    }
+
+    &-Values {
+        position: absolute;
+        font-size: 15px;
+        right: 10px;
+        transform: translateY(-50%);
+    }
+
+    &-Content {
+        overflow-x: scroll;
+        padding-bottom: 10px;
+    }
+
+    &-Table {
+        position: relative;
+        height: 500px;
+        width: fit-content;
+    }
+
+    &-Stripe {
+        position: absolute;
+        border-top: 1px solid #bbbbbb;
+        width: 100%;
+    }
+
+    &-HeaderCell {
+        display: inline-block;
+        overflow: hidden;
+        text-align: center;
+        width: $cellWidth;
+        font-size: 11px;
+        flex-shrink: 0;
+        transform: rotate(45deg);
+    }
+
+    &-TableCell {
+        display: inline-block;
+        height: 100%;
+        width: $cellWidth;
+        box-sizing: border-box;
+
+        border-right: 1px solid #bbbbbb;
+
+        &_first {
+            border-left: 1px solid #bbbbbb;
+        }
+    }
+
+    &-Line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}

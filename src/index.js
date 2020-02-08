@@ -5,7 +5,7 @@ import { Root } from './components/Root/Root';
 
 ReactDOM.render(
     React.createElement(Root, {}, null),
-    document.querySelector('body')
+    document.querySelector('#app')
 );
 
 
