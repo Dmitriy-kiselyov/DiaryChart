@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { getData, IData } from '../../lib/getData';
+import { getData, IData, IDataNode } from '../../lib/getData';
 
 import './Chart.scss';
 
 export class Chart extends React.PureComponent<{}> {
     private data: IData = getData();
-    private percentages: string[] = new Array(this.data.max + 1).fill(0).map((_, i) => (100 - i / this.data.max * 100).toFixed(3));
+    private percentages: string[] = new Array(this.data.max + 1).fill(0).map((_, i) => this.getPercent(i));
+    private cellWidth: number = 30;
 
     render() {
         return (
@@ -24,28 +25,33 @@ export class Chart extends React.PureComponent<{}> {
                         <svg className="Chart-Line" xmlns="http://www.w3.org/2000/svg">
                             {this.renderPath()}
                         </svg>
+                        <svg className="Chart-Line" xmlns="http://www.w3.org/2000/svg">
+                            {this.renderAveragePath()}
+                        </svg>
                     </div>
                 </div>
             </div>
         );
     }
 
+    private getPercent(value: number) {
+        return (100 - value / this.data.max * 100).toFixed(3);
+    }
+
     private renderPath(): React.ReactElement[] {
         const { nodes } = this.data;
-        const width = 30;
         const path = [];
 
         for (let i = 1; i < nodes.length; i++) {
             const prev = nodes[i - 1];
             const cur = nodes[i];
-            const x = width / 2 + width * (i - 1);
 
             path.push(
                 <line
                     key={'path-' + i}
-                    x1={x}
+                    x1={this.getCellX(i - 1)}
                     y1={this.percentages[prev.value] + '%'}
-                    x2={x + width}
+                    x2={this.getCellX(i)}
                     y2={this.percentages[cur.value] + '%'}
                     stroke="blue"
                     strokeWidth="2"
@@ -57,7 +63,7 @@ export class Chart extends React.PureComponent<{}> {
             path.push(
                 <circle
                     key={'circle-' + i}
-                    cx={width / 2 + width * i}
+                    cx={this.getCellX(i)}
                     cy={this.percentages[node.value] + '%'}
                     r="5"
                     fill="red"
@@ -66,6 +72,64 @@ export class Chart extends React.PureComponent<{}> {
         });
 
         return path;
+    }
+
+    private renderAveragePath(): React.ReactElement[] {
+        const { nodes } = this.data;
+        const path = [];
+        let prevI = 0;
+        let sum = nodes[0].value;
+        let prevPercent = this.percentages[sum];
+
+        for (let i = 1; i < nodes.length; i++) {
+            while (this.isMonthBefore(this.getLastDate(nodes[prevI]), this.getLastDate(nodes[i]))) {
+                sum -= nodes[prevI].value;
+                prevI++;
+            }
+
+            const curPercent = this.getPercent(sum / (i - prevI));
+
+            path.push(
+                <line
+                    key={'path-' + i}
+                    x1={this.getCellX(i - 1)}
+                    y1={prevPercent + '%'}
+                    x2={this.getCellX(i)}
+                    y2={curPercent + '%'}
+                    stroke="green"
+                    strokeWidth="2"
+                />
+            );
+
+            // не учитываю текущий
+            sum += nodes[i].value;
+            prevPercent = curPercent;
+        }
+
+        return path;
+    }
+
+    private getCellX(index: number): number {
+        return this.cellWidth / 2 + this.cellWidth * index;
+    }
+
+    private getLastDate(node: IDataNode) {
+        if (Array.isArray(node.date)) {
+            return node.date[1];
+        }
+
+        return node.date;
+    }
+
+    /*
+     * Считаем по 30 дней
+     */
+    private isMonthBefore(prev: Date, cur: Date): boolean {
+        // @ts-ignore
+        const diff = cur - prev;
+        const days = diff / 1000 / 60 / 60 / 24;
+
+        return days > 30;
     }
 
     private renderHeaderCells(): React.ReactElement[] {
