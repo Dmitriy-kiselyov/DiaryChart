@@ -30,6 +30,9 @@ export class Chart extends React.PureComponent<{}> {
                         </svg>
                     </div>
                 </div>
+                <div className="Chart-Scale">
+                    {this.renderScaleValues()}
+                </div>
             </div>
         );
     }
