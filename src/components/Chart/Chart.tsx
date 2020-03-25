@@ -8,6 +8,11 @@ export class Chart extends React.PureComponent<{}> {
     private data: IData = getData();
     private percentages: string[] = new Array(this.data.max + 1).fill(0).map((_, i) => this.getPercent(i));
     private cellWidth: number = 30;
+    private scrollRef: React.RefObject<HTMLDivElement> = React.createRef();
+
+    componentDidMount(): void {
+        this.scrollRef.current.scrollLeft = 99999999;
+    }
 
     render() {
         return (
@@ -15,7 +20,7 @@ export class Chart extends React.PureComponent<{}> {
                 <div className="Chart-Scale">
                     {this.renderScaleValues()}
                 </div>
-                <div className="Chart-Content">
+                <div className="Chart-Content" ref={this.scrollRef}>
                     <div className="Chart-Header">
                         {this.renderHeaderCells()}
                     </div>
